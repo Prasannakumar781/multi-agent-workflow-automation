@@ -4,6 +4,7 @@ from src.agents.scout import scout_node
 from src.agents.analyst import analyst_node
 from src.agents.strategist import strategist_node
 from src.agents.auditor import auditor_node
+from src.utils.persistence import get_checkpointer
 
 def route_after_audit(state: WorkflowState):
     if not state.get("approved"):
@@ -18,7 +19,7 @@ def route_after_human(state: WorkflowState):
 def human_review_node(state: WorkflowState):
     return state
 
-def build_graph():
+def build_graph(checkpointer=None):
     graph = StateGraph(WorkflowState)
 
     graph.add_node("scout", scout_node)
@@ -51,4 +52,7 @@ def build_graph():
         }
     )
 
-    return graph.compile()
+    if checkpointer is None:
+        with get_checkpointer() as cp:
+            return graph.compile(checkpointer=cp)
+    return graph.compile(checkpointer=checkpointer)
