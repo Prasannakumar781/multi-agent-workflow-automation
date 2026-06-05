@@ -1,0 +1,10 @@
+[project]
+name = "multi-agent-workflow-automation"
+version = "0.1.0"
+description = "Enterprise-grade multi-agent workflow automation system"
+requires-python = ">=3.11"
+dependencies = [
+  "langgraph",
+  "pydantic",
+  "tenacity"
+]
